@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="layui.demo.layuidemo.mapper.UserMapper">
+
+    <insert id="add" keyProperty="user.id"  keyColumn="id" useGeneratedKeys="true">
+        INSERT INTO users(name, sex, age, birth_day, birthplace, avatar, hobby) VALUES(#{user.name},#{user.sex},#{user.age},#{user.birthDay},#{user.birthplace},#{user.avatar},#{hobby});
+    </insert>
+
+    <update id="edit">
+        UPDATE users
+        <set>
+            <if test="user.name != null and user.name != ''">
+                name=#{user.name},
+            </if>
+            <if test="user.sex != null">
+                sex = #{user.sex},
+            </if>
+            <if test="user.age != null">
+                age = #{user.age},
+            </if>
+            <if test="user.birthDay != null">
+                birth_day=#{user.birthDay},
+            </if>
+            <if test="user.birthplace != null">
+                birthplace=#{user.birthplace},
+            </if>
+            <if test="user.avatar != null">
+                avatar = #{user.avatar},
+            </if>
+            <if test="user.hobby != null">
+                hobby = #{hobby}
+            </if>
+        </set>
+        WHERE id = #{user.id};
+    </update>
+
+    <delete id="delete">
+        <if test="ids != null and ids.size &gt; 0">
+            DELETE FROM users WHERE id IN
+            <foreach collection="ids" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>;
+        </if>
+    </delete>
+
+    <delete id="deleteById">
+            DELETE FROM users WHERE id = #{id}
+    </delete>
+
+    <sql id="query">
+        <where>
+            <if test="name != null and name.trim != ''">
+               AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <choose>
+                <when test="minAge != null and minAge &gt; 0 and maxAge != null and maxAge &gt; 0">
+                    AND  age between #{minAge} and #{maxAge}
+                </when>
+                <when test="minAge != null and minAge &gt; 0">
+                    AND  age >= #{minAge}
+                </when>
+                <when test="maxAge != null and maxAge > 0">
+                    AND  age &lt;= #{maxAge}
+                </when>
+            </choose>
+            <if test="birthplace != null and birthplace != ''">
+                AND   birthplace = #{birthplace}
+            </if>
+            <choose>
+                <when test="sex != null and sex != 2">
+                    AND sex = #{sex}
+                </when>
+            </choose>
+        </where>
+    </sql>
+
+    <select id="query" resultType="layui.demo.layuidemo.model.User">
+        SELECT id, name, sex, age, birth_day, birthplace, avatar,hobby  FROM users
+        <include refid="query" />
+    </select>
+
+    <select id="queryUserById" resultType="layui.demo.layuidemo.model.User">
+        SELECT id, name, sex, age, birth_day, birthplace, avatar,hobby  FROM users WHERE id = #{id}
+    </select>
+</mapper>

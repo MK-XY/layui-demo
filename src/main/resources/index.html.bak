@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CRUD</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="/layui/layui.js"></script>
+    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+
+    <!--新增模态框-->
+    <div id="modalBoxForm" style="display: none; width: 600px;" class="layui-container">
+        <form class="layui-form layui-form-pane" lay-filter="modelForm"  enctype="multipart/form-data"  >
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" id="modelName" lay-verify="required|name" class="layui-input" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="sex" value="0" title="男" checked/>
+                    <input type="radio" name="sex" value="1" title="女" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" for="modelAge">年龄</label>
+                <div class="layui-input-block">
+                    <input type="number" name="age" id="modelAge" lay-verify="required|age" class="layui-input" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">籍贯</label>
+                <div class="layui-input-block">
+                    <select name="birthplace">
+                        <option value="0" selected>不限</option>
+                        <option value="1">河北省</option>
+                        <option value="2">山西省</option>
+                        <option value="3">吉林省</option>
+                        <option value="4">辽宁省</option>
+                        <option value="5">黑龙江省</option>
+                        <option value="6">陕西省</option>
+                        <option value="7">甘肃省</option>
+                        <option value="8">青海省</option>
+                        <option value="9">山东省</option>
+                        <option value="10">福建省</option>
+                        <option value="11">浙江省</option>
+                        <option value="12">河南省</option>
+                        <option value="13">湖北省</option>
+                        <option value="14">湖南省</option>
+                        <option value="15">江西省</option>
+                        <option value="16">江苏省</option>
+                        <option value="17">安徽省</option>
+                        <option value="18">广东省</option>
+                        <option value="19">海南省</option>
+                        <option value="20">四川省</option>
+                        <option value="21">贵州省</option>
+                        <option value="22">云南省</option>
+                        <option value="23">北京市</option>
+                        <option value="24">上海市</option>
+                        <option value="25">天津市</option>
+                        <option value="26">重庆市</option>
+                        <option value="27">内蒙古自治区</option>
+                        <option value="28">新疆维吾尔自治区</option>
+                        <option value="29">宁夏回族自治区</option>
+                        <option value="30">广西壮族自治区</option>
+                        <option value="31">西藏自治区</option>
+                        <option value="32">香港特别行政区</option>
+                        <option value="33">澳门特别行政区</option>
+                        <option value="34">中国台湾</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">生日</label>
+                <div class="layui-input-block">
+                    <input type="text" name="birthDay" id="modelBirthDay" lay-verify="required" class="layui-input" autocomplete="off" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">爱好</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="hobby" value="0" title="阅读" />
+                    <input type="checkbox" name="hobby" value="1" title="音乐">
+                    <input type="checkbox" name="hobby" value="2" title="电影">
+                    <input type="checkbox" name="hobby" value="3" title="code">
+                    <input type="checkbox" name="hobby" value="4" title="其他" checked>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">上传头像</label>
+                <div class="layui-input-inline">
+                    <input name="avatar" type="file" lay-verify="required" required accept="image/*" /> </input>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-filter="modelForm" lay-submit>立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--修改模态框-->
+    <div id="updateBoxForm" style="display: none; width: 600px;" class="layui-container">
+        <form class="layui-form layui-form-pane" lay-filter="updateForm"  enctype="multipart/form-data"  >
+            <input type="hidden" name="id" />
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" lay-verify="required|name" class="layui-input" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="sex" value="0" title="男" checked/>
+                    <input type="radio" name="sex" value="1" title="女" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" for="modelAge">年龄</label>
+                <div class="layui-input-block">
+                    <input type="number" name="age" lay-verify="required|age" class="layui-input" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">籍贯</label>
+                <div class="layui-input-block">
+                    <select name="birthplace">
+                        <option value="0" selected>不限</option>
+                        <option value="1">河北省</option>
+                        <option value="2">山西省</option>
+                        <option value="3">吉林省</option>
+                        <option value="4">辽宁省</option>
+                        <option value="5">黑龙江省</option>
+                        <option value="6">陕西省</option>
+                        <option value="7">甘肃省</option>
+                        <option value="8">青海省</option>
+                        <option value="9">山东省</option>
+                        <option value="10">福建省</option>
+                        <option value="11">浙江省</option>
+                        <option value="12">河南省</option>
+                        <option value="13">湖北省</option>
+                        <option value="14">湖南省</option>
+                        <option value="15">江西省</option>
+                        <option value="16">江苏省</option>
+                        <option value="17">安徽省</option>
+                        <option value="18">广东省</option>
+                        <option value="19">海南省</option>
+                        <option value="20">四川省</option>
+                        <option value="21">贵州省</option>
+                        <option value="22">云南省</option>
+                        <option value="23">北京市</option>
+                        <option value="24">上海市</option>
+                        <option value="25">天津市</option>
+                        <option value="26">重庆市</option>
+                        <option value="27">内蒙古自治区</option>
+                        <option value="28">新疆维吾尔自治区</option>
+                        <option value="29">宁夏回族自治区</option>
+                        <option value="30">广西壮族自治区</option>
+                        <option value="31">西藏自治区</option>
+                        <option value="32">香港特别行政区</option>
+                        <option value="33">澳门特别行政区</option>
+                        <option value="34">中国台湾</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">生日</label>
+                <div class="layui-input-block">
+                    <input type="text" name="birthDay" id="updateBirthDay" lay-verify="required" class="layui-input" autocomplete="off" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">爱好</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="hobby" value="0" title="阅读" />
+                    <input type="checkbox" name="hobby" value="1" title="音乐">
+                    <input type="checkbox" name="hobby" value="2" title="电影">
+                    <input type="checkbox" name="hobby" value="3" title="code">
+                    <input type="checkbox" name="hobby" value="4" title="其他" checked>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">上传头像</label>
+                <div class="layui-input-inline">
+                    <input name="avatarFile" type="file" accept="image/*" /> </input>
+                </div>
+                <div  class="layui-input-inline">
+                   <input type="text" name="avatar" class="layui-input" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-filter="updateForm" lay-submit>立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="layui-card layui-container">
+        <div class="layui-card-header"><span style="font-size: 18px;">查询</span></div>
+        <div class="layui-card-body">
+            <form class="layui-form" action="" method="get" lay-filter="searchForm">
+                <div class="layui-form-item">
+                    <label class="layui-form-label" for="name">用户名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" id="name" autocomplete="off" class="layui-input" />
+                    </div>
+                </div>
+    
+                <div class="layui-form-item">
+                    <label class="layui-form-label">性别</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="sex" value="0" title="男" />
+                        <input type="radio" name="sex" value="1" title="女" />
+                        <input type="radio" name="sex" value="2" title="不限" checked />
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+    
+                    <label class="layui-form-label">年龄</label>
+                    <div class="layui-input-inline">
+                        <input type="number" name="minAge" class="layui-input" />
+                    </div>
+                    <div class="layui-form-mid">-</div>
+                    <div class="layui-input-inline">
+                        <input type="number" name="maxAge" class="layui-input" />
+                    </div>
+                </div>
+    
+                <div class="layui-form-item">
+                    <label class="layui-form-label">籍贯</label>
+                    <div class="layui-input-block">
+                        <select name="birthplace">
+                            <option value="0" selected>不限</option>
+                            <option value="1">河北省</option>
+                            <option value="2">山西省</option>
+                            <option value="3">吉林省</option>
+                            <option value="4">辽宁省</option>
+                            <option value="5">黑龙江省</option>
+                            <option value="6">陕西省</option>
+                            <option value="7">甘肃省</option>
+                            <option value="8">青海省</option>
+                            <option value="9">山东省</option>
+                            <option value="10">福建省</option>
+                            <option value="11">浙江省</option>
+                            <option value="12">河南省</option>
+                            <option value="13">湖北省</option>
+                            <option value="14">湖南省</option>
+                            <option value="15">江西省</option>
+                            <option value="16">江苏省</option>
+                            <option value="17">安徽省</option>
+                            <option value="18">广东省</option>
+                            <option value="19">海南省</option>
+                            <option value="20">四川省</option>
+                            <option value="21">贵州省</option>
+                            <option value="22">云南省</option>
+                            <option value="23">北京市</option>
+                            <option value="24">上海市</option>
+                            <option value="25">天津市</option>
+                            <option value="26">重庆市</option>
+                            <option value="27">内蒙古自治区</option>
+                            <option value="28">新疆维吾尔自治区</option>
+                            <option value="29">宁夏回族自治区</option>
+                            <option value="30">广西壮族自治区</option>
+                            <option value="31">西藏自治区</option>
+                            <option value="32">香港特别行政区</option>
+                            <option value="33">澳门特别行政区</option>
+                            <option value="34">中国台湾</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="submit" class="layui-btn" lay-submit lay-filter="form">查询</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        <button type="button" class="layui-btn layui-btn-primary" id="value">复制</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <table id="table" lay-filter="list" class="layui-table"></table>
+
+    <script id="tableBar" type="text/html">
+        <a class="layui-btn layui-btn-warm layui-btn-sm" lay-event="edit">修改</a>
+        <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
+    </script>
+
+    <script id="tableBarHead" type="text/html">
+        <a class="layui-btn" lay-event="add">新增</a>
+        <a class="layui-btn layui-btn-danger" lay-event="deleteAll">删除</a>
+    </script>
+
+    <script>
+            var sexs = ['男', '女'];
+            var places = ['不限', '河北省', '山西省', '吉林省', '辽宁省', '黑龙江省', '陕西省', '甘肃省', '青海省', '山东省', '福建省', '浙江省', '河南省', '湖北省', '湖南省', '江西省', '江苏省', '安徽省', '广东省', '海南省', '四川省', '贵州省', '云南省', '北京市', '上海市', '天津市', '重庆市', '内蒙古自治区', '新疆维吾尔自治区', '宁夏回族自治区', '广西壮族自治区', '西藏自治区', '香港特别行政区', '澳门特别行政区', '中国台湾'];
+            var hobbies = ['阅读','音乐','电影','code','其他'];
+    
+            layui.use(['form','table','laydate'],function(){
+                var form = layui.form,
+                table = layui.table;
+                var laydate = layui.laydate;
+
+                form.on('submit(form)',function(data){
+                    tableIns.reload({
+                        where : data.field
+                    })
+                    return false;
+                });
+
+                form.on('submit(modelForm)',function(data){
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST","/demo/layui")
+                    xhr.setRequestHeader("Content-Type","application/json")
+                    xhr.send(JSON.stringify(data.field))
+                    tableIns.render()
+                    return false;
+                });
+
+                form.on('submit(updateForm)',function(data){
+                    console.info(data)
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("PUT","/demo/layui")
+                    xhr.setRequestHeader("Content-Type","application/json")
+                    xhr.send(JSON.stringify(data.field))
+                    tableIns.render()
+                    return false;
+                });
+                form.verify({
+                    name:function(value){
+                        if(value.length < 4){
+                            return '用户名不能小于4位'
+                        }
+                        if(value.length > 10){
+                            return '用户名不能大于10位'
+                        }
+                        if(!new RegExp("^[\\u4e00-\\u9fa5_a-zA-Z0-6\\-\\.]{4,10}$").test(value)){
+                            return '用户名不是中英文大小写0-6-_.这种格式'
+                        }
+                    },
+                    age:function (value) {
+                        if(value < 0){
+                            return '年龄不能为负数'
+                        }else if(value > 200){
+                            return '年龄不能大于200'
+                        }
+                    }
+                });
+                document.getElementById("value").onclick = function() {
+                    var object = {
+                        birthplace: "1",
+                        maxAge: "20",
+                        minAge: "1",
+                        name: "。。。。",
+                        sex: "1"
+                    }
+                    layui.form.val("searchForm", object)
+                }
+                var tableIns = table.render({
+                    elem: '#table',
+                    url:'/demo/layui', // 数据接口
+                    parseData: function(res){
+                        return{
+                            "code": res.code,
+                            "data": res.data,
+                            "count": res.total
+                        };
+                    },
+                    limit: 5,
+                    limits: [5,10,15,20,30,40,50,60,70,80,90,100],
+                    request: {limitName:'pageSize'},
+                    title: '用户数据表', 
+                    page: true, // 开启分页
+                    toolbar: '#tableBarHead',
+                    cols: [[ // 表头
+                       {type:'checkbox',fixed:'left',filed:'id'},
+                       {field:'name',title:'用户名'},
+                       {field:'sex',title:'性别',templet: function (data) {
+                           return sexs[data.sex];
+                           }},
+                       {field:'age',title:'年龄',sort:true,},
+                       {field:'birthplace',title:'籍贯',sort:true,templet: function (data) {
+                            return places[data.birthplace];
+                           }},
+                       {field:'birthDay',title:'生日'},
+                       {field:'hobby',title:'爱好', templet: function (data) {
+                           var str = "";
+                           for (var i = 0; i < data.hobby.length; i++){
+                               str = str + hobbies[data.hobby[i]] + " ";
+                                }
+                               return str;
+                           }
+                       },
+                       {field:'avatar',title:'头像',templet: function (data) {
+                           return '<img width="24px" height="24px" src='+data.avatar+' />';
+                           }},
+
+                       {fixed:'right',title:'操作',align:'center',toolbar:'#tableBar'}
+                    ]]
+                });
+
+                table.on('tool(list)',function (obj) {
+                    var data = obj.data;
+                    var layEvent = obj.event;
+                    if(layEvent == 'del'){ // 删除
+                        layer.confirm("请确认是否删除" , function (index) {
+                            obj.del();
+                            layer.close(index);
+                            var xhr = new XMLHttpRequest();
+                            xhr.onload = function () {
+                                tableIns.reload();
+                            }
+                            xhr.open("DELETE",'/demo/layui/'+data.id)
+                            xhr.send();
+                        })
+                    }else if(layEvent == 'edit'){
+
+                        layer.open({
+                            type:1,
+                            title:'修改用户',
+                            content: $("#updateBoxForm"),
+                            shadeClose: true,
+                            area: '600px',
+                            scrollbar: false,
+                            success: function (layero, index) {
+                                form.val('updateForm',data)
+                            }
+                        })
+                        form.render();
+                        laydate.render({
+                            elem: '#updateBirthDay',
+                            calendar: 'true',
+                            theme: 'molv',
+                        })
+                    }
+                })
+                table.on('toolbar(list)', function(obj){
+                    var checkStatus = table.checkStatus(obj.config.id),
+                        data = checkStatus.data;
+                    switch (obj.event) {
+                        case 'add':{
+                            layer.open({
+                                type:1,
+                                title:'新增用户',
+                                content: $("#modalBoxForm"),
+                                shadeClose: true,
+                                area: '600px',
+                                scrollbar: false
+                            })
+                            form.render();
+                            laydate.render({
+                                elem: '#modelBirthDay',
+                                calendar: 'true',
+                                theme: 'molv',
+                            })
+                        };
+                            break;
+                        case 'deleteAll':{
+                            if(data.length == 0){
+                                layer.msg('请选择一行');
+                            }else {
+                                var url = "";
+                                for (var i = 0; i < data.length; i++){
+                                    if(i == 0){
+                                        url = url + "?id=" + data[i].id;
+                                    }else{
+                                        url = url + "&id=" + data[i].id;
+                                    }
+                                }
+                                var xhr = new XMLHttpRequest();
+                                xhr.onload = function () {
+                                    tableIns.reload();
+                                }
+                                xhr.open("DELETE","/demo/layui"+url)
+                                xhr.send();
+                            }
+                        }
+                            break;
+                    }
+                });
+            });
+        </script>
+</body>
+</html>
